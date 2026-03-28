@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIWW | Asia International Water Week 2027</title>
+    <!-- Font Awesome 6 (free) for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* ---------- SPLASH SCREEN (animated logo) ---------- */
+        #splash-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(145deg, #a3d8f0 0%, #7ac7e9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.9s;
+        }
+
+        .splash-logo {
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 60% 40% 50% 50% / 40% 50% 60% 50%;
+            box-shadow: 0 20px 40px rgba(0, 100, 140, 0.6), inset 0 0 60px rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: splashDance 1.8s ease-in-out forwards, glowPulse 1.2s infinite alternate;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            padding: 20px;
+        }
+
+        .splash-logo img {
+            width: 80%;
+            height: auto;
+            filter: drop-shadow(0 0 25px #ffffff) brightness(1.2);
+            animation: iconRipple 1.8s ease-out forwards;
+        }
+
+        @keyframes splashDance {
+            0% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; transform: scale(0.4) rotate(-15deg); opacity: 0; }
+            30% { border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%; transform: scale(1.1) rotate(5deg); opacity: 1; }
+            60% { border-radius: 60% 40% 70% 30% / 40% 60% 30% 70%; transform: scale(1) rotate(-3deg); }
+            100% { border-radius: 50% 50% 40% 60% / 50% 50% 50% 50%; transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes iconRipple {
+            0% { opacity: 0; transform: scale(0.2) rotate(-20deg); filter: blur(10px); }
+            40% { opacity: 1; transform: scale(1.2) rotate(5deg); filter: blur(0); }
+            80% { transform: scale(1) rotate(0); filter: drop-shadow(0 0 30px white); }
+        }
+
+        @keyframes glowPulse {
+            from { box-shadow: 0 0 30px #7fd9ff, inset 0 0 40px white; }
+            to { box-shadow: 0 0 70px #b5ecff, inset 0 0 70px #ffffff; }
+        }
+
+        /* ---------- MAIN CONTENT (hidden until splash fades) ---------- */
+        #main-content {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            visibility: hidden;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Animated Water Background Elements */
+        .water-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* carriedo.png as background with low opacity */
+        .carriedo-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/carriedo.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            animation: slowZoom 25s infinite alternate ease-in-out;
+        }
+
+        /* Animated water waves overlay */
+        .wave-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(255,255,255,0.3) 0%, rgba(180,230,255,0.2) 100%);
+        }
+
+        .wave-1, .wave-2, .wave-3 {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="0.3" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x bottom;
+            background-size: 100% 150px;
+            animation: wave 15s linear infinite;
+            pointer-events: none;
+        }
+
+        .wave-2 {
+            bottom: -50px;
+            opacity: 0.2;
+            animation: wave 12s linear reverse infinite;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(0,150,255,0.15)" fill-opacity="0.4" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,208C672,213,768,203,864,176C960,149,1056,107,1152,112C1248,117,1344,171,1392,197.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        }
+
+        .wave-3 {
+            bottom: -100px;
+            opacity: 0.1;
+            animation: wave 18s ease-in-out infinite;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.2)" fill-opacity="0.5" d="M0,96L48,106.7C96,117,192,139,288,138.7C384,139,480,117,576,122.7C672,128,768,160,864,165.3C960,171,1056,149,1152,133.3C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        }
+
+        /* Floating bubbles animation */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: bubble 8s infinite ease-in-out;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-25%) translateY(10px); }
+            100% { transform: translateX(-50%) translateY(0); }
+        }
+
+        @keyframes bubble {
+            0% { transform: translateY(0) scale(0); opacity: 0; }
+            50% { transform: translateY(-100px) scale(1); opacity: 0.3; }
+            100% { transform: translateY(-200px) scale(0); opacity: 0; }
+        }
+
+        /* ----- modern menu (white background, dark blue text) ----- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 50, 80, 0.15);
+            border-bottom: 2px solid #cce7f5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-small {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #003366;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logo-small img {
+            height: 45px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #003366;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: 0.3s;
+            letter-spacing: 0.5px;
+            text-transform: capitalize;
+        }
+
+        .nav-links a:not(.btn-reg):after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #0077be, #00a6e0);
+            transition: width 0.25s ease;
+            border-radius: 5px;
+        }
+
+        .nav-links a:not(.btn-reg):hover:after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #001f4d;
+            text-shadow: 0 0 5px #b3e0ff;
+        }
+
+        .btn-reg {
+            background: #0066b3;
+            color: white !important;
+            padding: 0.7rem 2rem !important;
+            border-radius: 40px;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 12px rgba(0, 102, 179, 0.4);
+            transition: 0.25s;
+            margin-left: 1rem;
+            text-transform: capitalize;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-reg:hover {
+            background: #004d99;
+            box-shadow: 0 6px 16px #003366;
+            transform: scale(1.02);
+        }
+
+        /* ----- Sticky Logo Section ----- */
+        .sticky-logo-section {
+            position: relative;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 90;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 50, 80, 0.1);
+            border-bottom: 2px solid #cce7f5;
+        }
+
+        .logo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            text-align: center;
+        }
+
+        .sticky-logo {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto 1rem auto;
+        }
+
+        .sticky-logo img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 5px 15px rgba(0, 100, 150, 0.2));
+        }
+
+        .logo-location {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #003366;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-tagline {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #004d99;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        /* ----- Hero Banner Slider (FIXED - with proper height) ----- */
+        .hero-banner {
+            width: 100%;
+            height: 600px; /* Fixed height for the banner */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 3;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255,255,255,0.6);
+        }
+
+        .dot.active {
+            background: white;
+            transform: scale(1.3);
+            box-shadow: 0 0 20px rgba(255,255,255,0.8);
+        }
+
+        /* ----- Video Section (FULL WIDTH) ----- */
+        .video-section {
+            width: 100%;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .video-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-loop-note {
+            text-align: center;
+            padding: 1rem;
+            color: #003366;
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ----- Host/Co-host Logos Section (AWC LOGO SMALLER) ----- */
+        .host-logos-section {
+            width: 100%;
+            padding: 3rem 5%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+
+        .host-logos-title {
+            font-size: 2rem;
+            color: #003366;
+            margin-bottom: 2rem;
+        }
+
+        .host-logos-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .host-logo-item {
+            text-align: center;
+        }
+
+        .host-logo-item img {
+            height: 80px;
+            width: auto;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s;
+        }
+
+        /* Make AWC logo smaller */
+        .host-logo-item img[alt="Asia Water Council"] {
+            height: 60px;
+        }
+
+        .host-logo-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .host-logo-item p {
+            margin-top: 0.5rem;
+            color: #004d99;
+            font-weight: 600;
+        }
+
+        /* ----- Quick Links (SMALLER BUTTONS) ----- */
+        .quick-links-section {
+            width: 100%;
+            padding: 3rem 5%;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .quick-links-title {
+            font-size: 2rem;
+            color: #003366;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quick-links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .quick-link-card {
+            background: linear-gradient(145deg, #0066b3, #004d99);
+            color: white;
+            padding: 1rem 1.8rem;
+            border-radius: 40px 15px 40px 15px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            min-width: 160px;
+        }
+
+        .quick-link-card i {
+            font-size: 1.5rem;
+            color: #b0e2ff;
+        }
+
+        .quick-link-card span {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .quick-link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -10px #0066b3;
+            background: linear-gradient(145deg, #0077be, #0066b3);
+        }
+
+        /* ----- Countdown Timer ----- */
+        .countdown-section {
+            width: 100%;
+            padding: 3rem 5%;
+            background: linear-gradient(145deg, #00264d, #003153);
+            color: white;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #b0e2ff;
+        }
+
+        .countdown-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .countdown-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            text-shadow: 2px 2px 15px rgba(127, 201, 255, 0.5);
+        }
+
+        .countdown-label {
+            font-size: 1.2rem;
+            color: #b0e2ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ----- introduction section ----- */
+        .hero-section {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0 5rem 0;
+            color: #003153;
+            text-align: center;
+        }
+
+        .description-wrapper {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-top: 2px solid rgba(0, 100, 150, 0.2);
+            border-bottom: 2px solid rgba(0, 100, 150, 0.2);
+            padding: 3rem 5%;
+            margin: 2rem 0;
+        }
+
+        .event-description {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            max-width: 1400px;
+            margin: 0 auto;
+            color: #003057;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .statistics-wrapper {
+            width: 100%;
+            background: #00264d;
+            padding: 3rem 5%;
+            margin: 2rem 0;
+            border-top: 3px solid #7fc9ff;
+            border-bottom: 3px solid #7fc9ff;
+        }
+
+        .statistics-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 250px;
+            padding: 2rem 2rem;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        .stat-item:not(:last-child) {
+            border-right: 1px solid rgba(127, 201, 255, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            color: #b0e2ff;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 15px rgba(127, 201, 255, 0.5));
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #b0e2ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .icon-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 3rem;
+            padding: 0 5%;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 1.5rem 2rem;
+            border-radius: 50px 20px 50px 20px;
+            border: 1px solid white;
+            transition: 0.3s;
+            box-shadow: 0 15px 25px -10px #7bb5cc;
+            min-width: 150px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-item:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-item i {
+            font-size: 2.7rem;
+            color: #005c99;
+            filter: drop-shadow(0 0 12px #4db8ff);
+            animation: bob 4s infinite alternate;
+        }
+
+        .feature-item span {
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            background: white;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            color: #003366;
+            text-transform: capitalize;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes bob {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-8px) scale(1.05); }
+        }
+
+        .feature-item:hover {
+            background: white;
+            border-color: #0099ff;
+            transform: scale(1.02);
+            box-shadow: 0 20px 30px -8px #2f9ec4;
+        }
+
+        /* ----- Latest Announcements (FIXED news icon) ----- */
+        .announcements-section {
+            width: 100%;
+            padding: 4rem 5%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #003366;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 30px 15px 30px 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 50, 80, 0.1);
+            transition: 0.3s;
+            border: 1px solid #cce7f5;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 40px rgba(0, 102, 179, 0.2);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(145deg, #0066b3, #004d99);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .news-image i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-date {
+            color: #0066b3;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-date i {
+            margin-right: 5px;
+        }
+
+        .news-title {
+            font-size: 1.3rem;
+            color: #003366;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .news-excerpt {
+            color: #004d99;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .news-link {
+            color: #0066b3;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .news-link:hover {
+            color: #004d99;
+            gap: 8px;
+        }
+
+        /* ----- Social Media Integration ----- */
+        .social-section {
+            width: 100%;
+            padding: 4rem 5%;
+            background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
+            text-align: center;
+        }
+
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 2rem auto 0;
+        }
+
+        .social-item {
+            text-align: center;
+        }
+
+        .social-icon-large {
+            font-size: 4rem;
+            color: #0066b3;
+            margin-bottom: 1rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .social-icon-large:hover {
+            transform: translateY(-10px) scale(1.1);
+            color: #004d99;
+            filter: drop-shadow(0 10px 20px rgba(0, 102, 179, 0.3));
+        }
+
+        .social-item p {
+            color: #003366;
+            font-weight: 600;
+        }
+
+        /* ----- Footer ----- */
+        .footer {
+            background: #003153;
+            color: #e0f2ff;
+            padding: 3rem 5% 2rem 5%;
+            width: 100%;
+            border-top: 5px solid #7fc9ff;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, #7fc9ff, #00a6ff, #7fc9ff, transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            text-align: center;
+        }
+
+        .footer-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-col h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: white;
+            text-transform: capitalize;
+        }
+
+        .footer-col img.footer-logo {
+            height: 40px;
+            width: auto;
+            margin-right: 8px;
+            filter: brightness(1.2) drop-shadow(0 0 10px rgba(127, 201, 255, 0.5));
+            transition: transform 0.3s;
+        }
+
+        .footer-col img.footer-logo:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .footer-tagline {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #7fc9ff;
+            margin: 0.5rem 0 1rem 0;
+            font-style: italic;
+        }
+
+        .footer-col p, .footer-col a {
+            color: #c2e4f0;
+            text-decoration: none;
+            line-height: 2.2;
+            transition: 0.3s;
+            display: inline-block;
+            text-transform: none;
+            font-size: 1.05rem;
+            position: relative;
+        }
+
+        .footer-col .contact-email {
+            text-transform: lowercase !important;
+        }
+
+        .footer-col a {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            text-transform: capitalize;
+        }
+
+        .footer-col a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #7fc9ff;
+            transition: width 0.3s ease, left 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .footer-col a:hover::after {
+            width: 100%;
+            left: 50%;
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.8rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .social-icons i {
+            font-size: 2.2rem;
+            color: #b0e2ff;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .social-icons i:hover {
+            transform: translateY(-5px) scale(1.2);
+            color: white;
+            filter: drop-shadow(0 0 12px #aae0ff);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid #2f6f9c;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #bdd9ed;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-bottom i {
+            color: #7fc9ff;
+            margin: 0 4px;
+        }
+
+        .btn-clicked {
+            animation: buttonPop 0.3s ease;
+        }
+
+        @keyframes buttonPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 1rem 3%;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .logo-location {
+                font-size: 1.4rem;
+            }
+            .logo-tagline {
+                font-size: 1.1rem;
+            }
+            .hero-banner {
+                height: 300px; /* Smaller height for mobile */
+            }
+            .event-description {
+                font-size: 1rem;
+            }
+            .stat-item {
+                min-width: 100%;
+                border-right: none !important;
+                border-bottom: 1px solid rgba(127, 201, 255, 0.3);
+            }
+            .stat-item:last-child {
+                border-bottom: none;
+            }
+            .stat-number {
+                font-size: 3rem;
+            }
+            .stat-label {
+                font-size: 1.2rem;
+            }
+            .quick-links-grid {
+                gap: 1rem;
+            }
+            .quick-link-card {
+                padding: 0.8rem 1.5rem;
+                min-width: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SPLASH SCREEN -->
+    <div id="splash-overlay">
+        <div class="splash-logo">
+            <img src="images/logo.png" alt="MWSS Logo" id="splash-logo-img">
+        </div>
+    </div>
+
+    <!-- MAIN LANDING PAGE -->
+    <div id="main-content">
+        <!-- Animated Water Background -->
+        <div class="water-bg">
+            <div class="carriedo-bg"></div>
+            <div class="wave-overlay"></div>
+            <div class="wave-1"></div>
+            <div class="wave-2"></div>
+            <div class="wave-3"></div>
+        </div>
+
+        <!-- modern menu -->
+        <nav class="navbar">
+            <div class="logo-small">
+                <img src="images/logo.png" alt="MWSS Logo" id="menu-logo">
+                MWSS
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active">Home</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Program</a>
+                <a href="#" class="nav-link">Participation</a>
+                <a href="#" class="nav-link">Exhibition</a>
+                <a href="#" class="nav-link">Venue</a>
+                <a href="#" class="nav-link">Travel</a>
+                <a href="#" class="btn-reg" id="registerBtn">Register Now</a>
+            </div>
+        </nav>
+
+        <!-- aiww.png with Manila 2027 and tagline -->
+        <div class="sticky-logo-section">
+            <div class="logo-container">
+                <div class="sticky-logo">
+                    <img src="images/aiww.png" alt="Asia International Water Week">
+                </div>
+                <div class="logo-location">MANILA, PHILIPPINES IN 2027</div>
+                <div class="logo-tagline">"Sustainable Water Solutions for a Resilient Asia"</div>
+            </div>
+        </div>
+
+        <!-- Hero Banner Slider with custom PNG banners (FIXED HEIGHT) -->
+        <div class="hero-banner">
+            <div class="slider-container">
+                <!-- Slide 1 - banner1.png -->
+                <div class="slide active" style="background-image: url('images/banner1.png');"></div>
+                <!-- Slide 2 - banner2.png -->
+                <div class="slide" style="background-image: url('images/banner2.png');"></div>
+                <!-- Slide 3 - banner3.png -->
+                <div class="slide" style="background-image: url('images/banner3.png');"></div>
+                <div class="slider-dots">
+                    <span class="dot active" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/FdF4dNcSUwk?autoplay=1&mute=1&loop=1&playlist=FdF4dNcSUwk" title="MWSS Water Security: Legacy - Kaliwa Dam Project" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-loop-note">
+                    <i class="fas fa-play-circle"></i> MWSS Water Security: Legacy - Kaliwa Dam Project (highlight video loop)
+                </div>
+            </div>
+        </div>
+
+        <!-- Host/Co-host Logos Section (AWC LOGO SMALLER) -->
+        <div class="host-logos-section">
+            <h2 class="host-logos-title">Host & Co-organizers</h2>
+            <div class="host-logos-container">
+                <div class="host-logo-item">
+                    <img src="images/logo.png" alt="MWSS">
+                    <p>MWSS</p>
+                </div>
+                <div class="host-logo-item">
+                    <img src="images/mwci.png" alt="MWCI">
+                    <p>MWCI</p>
+                </div>
+                <div class="host-logo-item">
+                    <img src="images/mwsi.png" alt="MWSI">
+                    <p>MWSI</p>
+                </div>
+                <div class="host-logo-item">
+                    <img src="images/awc.png" alt="Asia Water Council">
+                    <p>Asia Water Council</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links (SMALLER BUTTONS) -->
+        <div class="quick-links-section">
+            <h2 class="quick-links-title">Quick Links</h2>
+            <div class="quick-links-grid">
+                <a href="#" class="quick-link-card">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Program</span>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <i class="fas fa-hotel"></i>
+                    <span>Venue & Hotel</span>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <i class="fas fa-handshake"></i>
+                    <span>Sponsors</span>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <i class="fas fa-download"></i>
+                    <span>Downloads</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="countdown-section">
+            <h2 class="countdown-title">Countdown to AIWW 2027</h2>
+            <div class="countdown-container">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">365</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">24</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">60</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">60</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- introduction section -->
+        <div class="hero-section">
+            <div class="description-wrapper">
+                <div class="event-description">
+                    The AIWW is a triennial water gathering for multi-stakeholders to seek tangible implementation for resolving Asian water problems. It is organized by the Asia Water Council in collaboration with the authorities of the host country. Regional water problems that were discussed for three years prior to the AIWW based on the preparatory process will be raised as the primary issues from Asian water community and will be disseminated to the global water community with action plans to solve them and timelines for them by the relevant committee at the AIWW. The tangible plans to implement solutions by each committee will be particularly highlighted by organizing the sessions on the pertinent topics. Designing the future plans for collected action plans will be the core part of the gathering in the AIWW. Members and prospective members of the AWC including water related stakeholders and preeminent experts are gathered in the AIWW and share their insights and experiences to support and develop the activities of the AWC so that it consequently contributes to pave the way towards sustainable development in Asia. As the AIWW is held one year prior to the World Water Forum, opportunities to organize the major gathering for the preparatory process for the World Water Forum will be provided to the AWC members and the follow up actions will also be continued at the World Water Forum.
+                </div>
+            </div>
+
+            <div class="statistics-wrapper">
+                <div class="statistics-section">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number" id="attendeesCount">0</div>
+                        <div class="stat-label">Attendees</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-number" id="companiesCount">0</div>
+                        <div class="stat-label">Participating Companies</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="icon-features">
+                <div class="feature-item">
+                    <i class="fas fa-water"></i>
+                    <span>Water Security</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <span>Sustainable Solutions</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-globe-asia"></i>
+                    <span>Asia Focus</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <span>Multi-Stakeholder</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Announcements (FIXED news icon) -->
+        <div class="announcements-section">
+            <h2 class="section-title">Latest Announcements</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> March 15, 2026</div>
+                        <h3 class="news-title">Registration Now Open for AIWW 2027</h3>
+                        <p class="news-excerpt">Early bird registration is now open for the 4th Asia International Water Week in Manila...</p>
+                        <a href="#" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> March 10, 2026</div>
+                        <h3 class="news-title">Call for Thematic Sessions</h3>
+                        <p class="news-excerpt">Submit your proposals for thematic sessions and side events for AIWW 2027...</p>
+                        <a href="#" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> March 5, 2026</div>
+                        <h3 class="news-title">Sponsorship Opportunities Available</h3>
+                        <p class="news-excerpt">Explore various sponsorship packages for the 4th Asia International Water Week...</p>
+                        <a href="#" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media Integration -->
+        <div class="social-section">
+            <h2 class="section-title">Follow Us</h2>
+            <div class="social-grid">
+                <div class="social-item">
+                    <i class="fab fa-facebook social-icon-large"></i>
+                    <p>@AIWW2027</p>
+                </div>
+                <div class="social-item">
+                    <i class="fab fa-youtube social-icon-large"></i>
+                    <p>AIWW Channel</p>
+                </div>
+                <div class="social-item">
+                    <i class="fab fa-instagram social-icon-large"></i>
+                    <p>@aiww2027</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>
+                        <img src="images/wlogo.png" alt="MWSS Logo" class="footer-logo">
+                        MWSS
+                    </h3>
+                    <p style="font-size: 1.3rem; font-weight: 600;">4th Asia International Water Week</p>
+                    <p class="footer-tagline">"Sustainable Water Solutions for a Resilient Asia"</p>
+                    <div class="social-icons">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-youtube"></i>
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3><i class="fas fa-map"></i> Pages</h3>
+                    <a href="#" class="footer-link">Home</a>
+                    <a href="#" class="footer-link">About</a>
+                    <a href="#" class="footer-link">Program</a>
+                    <a href="#" class="footer-link">Participation</a>
+                    <a href="#" class="footer-link">Exhibition</a>
+                    <a href="#" class="footer-link">Venue & Hotel</a>
+                    <a href="#" class="footer-link">Travel Guide</a>
+                    <a href="#" class="footer-link">Register Now</a>
+                </div>
+                <div class="footer-col">
+                    <h3><i class="fas fa-water"></i> Contact</h3>
+                    <p><i class="fa-regular fa-envelope"></i> <span class="contact-email">aiww@mwss.gov.ph</span></p>
+                    <p><i class="fa-solid fa-phone"></i> (02) 8920-5521</p>
+                    <p><i class="fa-solid fa-location-dot"></i> MWSS Complex, 489 Katipunan Avenue, Balara, Quezon City, 1105</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <i class="fa-regular fa-copyright"></i> 2026 Metropolitan Waterworks and Sewerage System. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            window.addEventListener('load', function() {
+                const splash = document.getElementById('splash-overlay');
+                const mainContent = document.getElementById('main-content');
+
+                // Create floating bubbles
+                for (let i = 0; i < 20; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    const size = Math.random() * 60 + 20;
+                    bubble.style.width = size + 'px';
+                    bubble.style.height = size + 'px';
+                    bubble.style.left = Math.random() * 100 + '%';
+                    bubble.style.bottom = '-100px';
+                    bubble.style.animationDelay = Math.random() * 5 + 's';
+                    bubble.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                    document.querySelector('.water-bg').appendChild(bubble);
+                }
+
+                setTimeout(() => {
+                    splash.style.transition = 'opacity 0.9s ease, visibility 0.9s';
+                    splash.style.opacity = '0';
+                    splash.style.visibility = 'hidden';
+                    mainContent.classList.add('visible');
+                    
+                    animateNumbers();
+                    startCountdown();
+                }, 2000);
+
+                function animateNumbers() {
+                    const attendeesTarget = 5842;
+                    const companiesTarget = 425;
+                    
+                    const duration = 2000;
+                    const steps = 60;
+                    const interval = duration / steps;
+                    
+                    let currentStep = 0;
+                    
+                    const counter = setInterval(() => {
+                        currentStep++;
+                        
+                        const progress = Math.min(1, currentStep / steps);
+                        const easedProgress = 1 - Math.pow(1 - progress, 3);
+                        
+                        const attendeesCount = Math.floor(easedProgress * attendeesTarget);
+                        const companiesCount = Math.floor(easedProgress * companiesTarget);
+                        
+                        document.getElementById('attendeesCount').textContent = attendeesCount.toLocaleString();
+                        document.getElementById('companiesCount').textContent = companiesCount.toLocaleString();
+                        
+                        if (currentStep >= steps) {
+                            clearInterval(counter);
+                            document.getElementById('attendeesCount').textContent = attendeesTarget.toLocaleString();
+                            document.getElementById('companiesCount').textContent = companiesTarget.toLocaleString();
+                        }
+                    }, interval);
+                }
+
+                function startCountdown() {
+                    const targetDate = new Date('March 1, 2027 00:00:00').getTime();
+                    
+                    function updateCountdown() {
+                        const now = new Date().getTime();
+                        const distance = targetDate - now;
+                        
+                        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        
+                        document.getElementById('days').textContent = days;
+                        document.getElementById('hours').textContent = hours;
+                        document.getElementById('minutes').textContent = minutes;
+                        document.getElementById('seconds').textContent = seconds;
+                    }
+                    
+                    updateCountdown();
+                    setInterval(updateCountdown, 1000);
+                }
+
+                // Slider functionality
+                let slideIndex = 1;
+                const slides = document.querySelectorAll('.slide');
+                const dots = document.querySelectorAll('.dot');
+
+                function showSlide(n) {
+                    if (n > slides.length) slideIndex = 1;
+                    if (n < 1) slideIndex = slides.length;
+                    
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    
+                    slides[slideIndex - 1].classList.add('active');
+                    dots[slideIndex - 1].classList.add('active');
+                }
+
+                window.currentSlide = function(n) {
+                    showSlide(slideIndex = n);
+                };
+
+                setInterval(() => {
+                    slideIndex++;
+                    if (slideIndex > slides.length) slideIndex = 1;
+                    showSlide(slideIndex);
+                }, 5000);
+
+                // Button click handlers
+                const registerBtn = document.getElementById('registerBtn');
+                const navLinks = document.querySelectorAll('.nav-link');
+                const footerLinks = document.querySelectorAll('.footer-link');
+                const quickLinks = document.querySelectorAll('.quick-link-card');
+
+                function handleButtonClick(e) {
+                    e.preventDefault();
+                    this.classList.add('btn-clicked');
+                    setTimeout(() => {
+                        this.classList.remove('btn-clicked');
+                    }, 300);
+                    
+                    if (this.classList.contains('btn-reg')) {
+                        alert('Registration page - Coming soon!');
+                    } else if (this.classList.contains('nav-link')) {
+                        alert(this.textContent + ' page - Coming soon!');
+                    } else if (this.classList.contains('footer-link')) {
+                        alert(this.textContent + ' - Coming soon!');
+                    } else if (this.classList.contains('quick-link-card')) {
+                        alert(this.querySelector('span').textContent + ' - Coming soon!');
+                    }
+                }
+
+                registerBtn.addEventListener('click', handleButtonClick);
+                navLinks.forEach(link => link.addEventListener('click', handleButtonClick));
+                footerLinks.forEach(link => link.addEventListener('click', handleButtonClick));
+                quickLinks.forEach(link => link.addEventListener('click', handleButtonClick));
+
+                const socialIcons = document.querySelectorAll('.social-icons i, .social-icon-large');
+                socialIcons.forEach(icon => {
+                    icon.addEventListener('click', () => {
+                        alert('Social media links coming soon!');
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

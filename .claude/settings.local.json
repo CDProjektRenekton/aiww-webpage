@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(pip install:*)",
+      "Bash(python -c \"import openpyxl; wb = openpyxl.load_workbook\\(''C:/Users/JJMJ/Downloads/4th_AIWW_Cost_Proposal.xlsx'', data_only=True\\); [print\\(s\\) for s in wb.sheetnames]\")",
+      "Bash(python -c \":*)",
+      "Bash(npm create:*)",
+      "Bash(mkdir -p _legacy)",
+      "Bash(mv index.html _legacy/)",
+      "Bash(mv images:*)",
+      "Read(//c/Users/JJMJ/Downloads/4th AIWW Website/**)",
+      "Bash(npx create-vite@latest aiww-temp --template react)",
+      "Bash(cp -r aiww-temp/* \"aiww-webpage-main/\")",
+      "Bash(cp aiww-temp/.gitignore \"aiww-webpage-main/\")",
+      "Bash(cp aiww-temp/.eslintrc* \"aiww-webpage-main/\")",
+      "Bash(rm -rf aiww-temp)",
+      "Bash(cp -r _legacy/images public/)",
+      "Bash(npm install:*)",
+      "Bash(npx vite:*)",
+      "Bash(node -e \":*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(xargs kill:*)"
+    ]
+  }
+}
